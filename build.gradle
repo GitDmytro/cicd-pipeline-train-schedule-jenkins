@@ -1,12 +1,17 @@
 plugins {
+    //inlude the nodeJS plugin to execute nodejs and npm tasks
     id("com.github.node-gradle.node") version "2.2.0"
 }
 
 node {
     download = true
+    version = "19.8.1"
+	npmVersion = "9.5.1"
 }
-
+//declare a build task
 task build
+
+//declare a task to create a zip of the app
 task zip(type: Zip) {
     from ('.') {
         include "*"
@@ -21,10 +26,9 @@ task zip(type: Zip) {
     baseName "trainSchedule"
 }
 
+//declare task dependencies
 build.dependsOn zip
 zip.dependsOn npm_build
-
-build.dependsOn npm_build
 npm_build.dependsOn npmInstall
 npm_build.dependsOn npm_test
 npm_test.dependsOn npmInstall
